@@ -1,0 +1,72 @@
+//colors variables
+$headerColor: #f3e9f1;
+
+//Mixins
+@mixin flexCenter($direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+@mixin flexHeader() {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+// Global
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+// Container
+.container {
+  height: 100vh;
+}
+
+// Header
+.header {
+  @include flexHeader();
+  background-color: $headerColor;
+  &_img {
+    height: 5em;
+  }
+  &_nav {
+    &_li {
+      list-style: none;
+    }
+  }
+}
+
+// Main Content
+.box-container {
+  display: grid;
+  grid-auto-flow: column;
+  width: 100%;
+}
+.product {
+  width: 100%;
+  //height: 300px;
+  padding: 1em;
+  text-decoration: none;
+  background-color: violet;
+  //background: linear-gradient(to bottom rgb(254, 168, 237), rgb(214, 37, 179));
+  &_img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+  &_sideBySide {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+}
+
+//ProductsUnique
+
+.data_img {
+  width: 500px;
+  height: auto;
+  object-fit: cover;
+}
