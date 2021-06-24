@@ -68,4 +68,100 @@
   -o-object-fit: cover;
      object-fit: cover;
 }
+
+/*
+La Page du Formulaire
+*/
+.mainForm {
+  background-color: #9b59b6;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.containerForm {
+  background-color: #fff;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+          box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+  width: 400px;
+}
+
+.containerForm_form {
+  padding: 30px 40px;
+}
+
+.containerForm_formControl {
+  margin-bottom: 5px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.containerForm_label {
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+.containerForm_input {
+  border: 2px solid #f0f0f0;
+  border-radius: 4px;
+  display: block;
+  padding: 10px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.containerForm_icon {
+  position: absolute;
+  top: 40px;
+  right: 10px;
+  visibility: hidden;
+}
+
+.containerForm_msg {
+  visibility: hidden;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.containerForm_btn {
+  background-color: #8e44ad;
+  border: 2px solid #8e44ad;
+  color: #fff;
+  display: block;
+  padding: 10px;
+  width: 100%;
+}
+
+.success input {
+  border-color: #2ecc71;
+}
+
+.success i.fa-check-circle {
+  visibility: visible;
+  color: #2ecc71;
+}
+
+.error input {
+  border-color: #e74c3c;
+}
+
+.error i.fa-exclamation-circle {
+  visibility: visible;
+  color: #e74c3c;
+}
+
+.error small {
+  visibility: visible;
+  color: #e74c3c;
+}
 /*# sourceMappingURL=styles.css.map */

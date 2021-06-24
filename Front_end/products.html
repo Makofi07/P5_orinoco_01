@@ -12,9 +12,7 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./Css/styles.css" />
-    <!---<script src="./Js/JS.js" defer></script>-->
     <script src="./Js/uniqueProduct.js" defer></script>
-    <!-- <script src="./Js/repliqueDeUniqueProduct.js" defer></script> -->
     <title>Orinoco</title>
   </head>
   <body>
@@ -37,7 +35,25 @@
           </ul>
         </nav>
       </header>
-      <main class="productUnique">
+      <main id="productUnique" class="productUnique">
+        <template id="productUniqueTemplate">
+          <div id="productLink" class="product">
+            <img id="dataImage" src="" alt="" class="data_img" />
+            <div class="data_sideBySide">
+              <h2 id="dataName" class="data_name"></h2>
+              <span id="dataPrice" class="data_price"></span>
+            </div>
+            <p id="dataDescription" class="data_description"></p>
+            <label for="text">
+              <select name="option" id="colorSelect" value="">
+                <option value="" class="color_option">
+                  Option de couleurs
+                </option>
+              </select>
+            </label>
+            <button id="addToCart">Ajouter au panier</button>
+          </div>
+        </template>
         <!-- <label for="">
           <select name="option" id="colorSelect" value=""></select>
         </label> -->

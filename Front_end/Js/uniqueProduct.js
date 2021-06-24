@@ -1,77 +1,123 @@
-//
-const urlId = new URLSearchParams(window.location.search).get("id");
-console.log(urlId);
-const structureProduct = document.querySelector(".productUnique");
-const product = {};
-let structureOption = [];
+main();
 
-function selectedProduct() {
-  fetch(`http://localhost:3000/api/teddies/${urlId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      structureProduct.innerHTML += `
-       <div id="productLink"  class="product">
-                <img id="dataImage" src="${
-                  data.imageUrl
-                }" alt="" class="data_img" />
-                <div class="data_sideBySide">
-                    <h2 id="dataName" class="data_name">${data.name}</h2>
-                    <span id="dataprice" class="data_price">${
-                      data.price / 100
-                    }.00 €</span>
-                    </div>
-                    <p id="dataDescription" class="data_description">${
-                      data.description
-                    }</p>
-                    <label for="text">
-                      <select name="option" id="colorSelect" value="">
-                        <option value="" class="color_option">Option de couleurs</option>  
-                      </select>
-                    </label>
-              </div>
-              `;
-      console.log(data.colors);
+async function main() {
+  const data = await fetchUniqueProduct();
 
-      // Choix des couleurs
-      let colorSelect = document.getElementById("colorSelect");
-      let structureOption = [];
-      for (let i = 0; i < data.colors.length; i++) {
-        console.log(data.colors[i]);
-        structureOption += `<option value="${data.colors[i]}" id="option" class="color_option">${data.colors[i]}</option>`;
-      }
-      colorSelect.innerHTML += structureOption;
+  displayUniqueProduct(data);
+}
 
-      // Ajout dans le DOM du bouton d'ajout au panier
-      productLink.insertAdjacentHTML(
-        "beforeend",
-        '<button id="addToCart">Ajouter au panier</button>'
-      );
-
-      // Localstorage stocker les choix des utilisateurs
-      function storeData(data, cart) {
-        //creation de l'Objet infoProduit
-        let infoProduit = {
-          name: data.name,
-          description: data.description,
-          price: data.price,
-          id: data._id,
-          imageUrl: data.imageUrl,
-        };
-
-        let listsProduit = localStorage.getItem("data")
-          ? JSON.parse(localStorage.getItem("data"))
-          : [];
-        listsProduit.push(infoProduit);
-        let cart = document.querySelector("#addToCart");
-        cart.addEventListener("click", function () {
-          console.log("what !");
-          localStorage.setItem("data", JSON.stringify(listsProduit));
-        });
-      }
+function fetchUniqueProduct() {
+  // recupérer la queystring de l'ID
+  const urlId = new URLSearchParams(window.location.search).get("id");
+  return fetch(`http://localhost:3000/api/teddies/${urlId}`)
+    .then(function (httpBodyResponse) {
+      return httpBodyResponse.json();
     })
-    .catch(function (err) {
-      console.log("une erreur est survenue");
+    .then(function (data) {
+      console.log(data);
+      return data;
+    })
+    .catch(function (error) {
+      console.log("Une erreur est survenue");
     });
 }
 
-selectedProduct();
+function displayUniqueProduct(data) {
+  const templateElt = document.getElementById("productUniqueTemplate");
+  const clone = document.importNode(templateElt.content, true);
+  clone.getElementById("dataImage").src = data.imageUrl;
+  clone.getElementById("dataName").textContent = data.name;
+  clone.getElementById("dataPrice").textContent = `${data.price / 100}.00 €`;
+
+  clone.getElementById("dataDescription").textContent = data.description;
+  document.getElementById("productUnique").appendChild(clone);
+
+  //Choix des couleurs
+  let colorSelect = document.getElementById("colorSelect");
+  console.log(colorSelect);
+  let structureOption = [];
+  for (let i = 0; i < data.colors.length; i++) {
+    console.log(data.colors[i]);
+    structureOption += `<option value="${data.colors[i]}" id="option" class="color_option">${data.colors[i]}</option>`;
+  }
+  colorSelect.innerHTML += structureOption;
+
+  // Version Denis
+  let cart = document.getElementById("addToCart");
+  cart.addEventListener("click", function (e) {
+    e.preventDefault();
+    console.log("hi !");
+    let infoProduit = {
+      name: data.name,
+      description: data.description,
+      price: data.price,
+      id: data._id,
+      imageUrl: data.imageUrl,
+    };
+
+    let listsProduit = JSON.parse(localStorage.getItem("data"));
+
+    const confirm = () => {
+      if (
+        window.confirm(
+          `La peluche ${data.name}  : a bien été ajouté au panier. Voir mon panier OK ou continuer mes achats ANNULER`
+        )
+      ) {
+        window.location.href = "cart.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    };
+
+    function addProductStorage() {
+      listsProduit.push(infoProduit);
+      localStorage.setItem("data", JSON.stringify(listsProduit));
+    }
+
+    if (listsProduit) {
+      addProductStorage();
+      confirm();
+    } else {
+      // sinon
+      listsProduit = [];
+      addProductStorage();
+      confirm();
+    }
+  });
+
+  // Version Saliha
+  // Cette partie est en phase de test à moi d'essayer davancer.
+  // Localstorage stocker les choix des utilisateurs
+  // function storeData(data, cart) {
+  //   let cart = document.querySelector("#addToCart");
+  //   //creation de l'Objet infoProduit
+  //   let infoProduit = {
+  //     name: data.name,
+  //     description: data.description,
+  //     price: data.price,
+  //     id: data._id,
+  //     imageUrl: data.imageUrl,
+  //   };
+
+  //   let listsProduit = localStorage.getItem("data")
+  //     ? JSON.parse(localStorage.getItem("data"))
+  //     : [];
+  //   listsProduit.push(infoProduit);
+
+  //   cart.addEventListener("click", function () {
+  //     console.log("what !");
+  //     localStorage.setItem("data", JSON.stringify(listsProduit));
+  //     console.log(listsProduit);
+  //   });
+  // }
+
+  //evenement au click
+  // document.getElementById("addToCart").addEventListener("click", function () {
+  //   console.log("what !");
+  //   //redirectToShoppingCart(data.name); fonction de redirection
+  // });
+  //  La redirection contient "addedProduct" est lié à une fonction que je n'ai pas mise en place
+  // function redirectToShoppingCart(dataName) {
+  //   window.location.href = `${window.location.origin}/cart.html?lastAddedProductName=${dataName}`;
+  // }
+}
